@@ -3,6 +3,7 @@ package storage;
 import java.sql.*;
 import java.util.Properties;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 public class Storage {
@@ -54,9 +55,24 @@ public class Storage {
         return students;
     }
 
-    public Student getStudentByName(String name) throws SQLException {
-        
-        return null;
+    public Optional<Student> getStudentByName(String name) throws SQLException {
+        String query = "SELECT id FROM aluno WHERE nome = ?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setString(1, name);
+        ResultSet rs = pstmt.executeQuery();
+
+        Optional<Student> student;
+        if (!rs.next()) {
+            student = Optional.ofNullable(null);
+            return student;
+        }
+
+        Student s = new Student();
+        s.name = name;
+        s.id = rs.getInt(1);
+        student = Optional.ofNullable(s);
+
+        return student;
     }
 
     public void deleteStudent(String name) throws SQLException {
