@@ -2,6 +2,7 @@ package src.storage;
 
 import java.sql.*;
 import java.util.Properties;
+import java.util.ArrayList;
 
 
 public class Storage {
@@ -18,5 +19,38 @@ public class Storage {
         properties.setProperty("user", user);
         properties.setProperty("password", password);
         connection = DriverManager.getConnection(url, properties);
+    }
+
+    public void createStudent(String name) {
+
+    }
+
+    public ArrayList<String> getStudents() {
+
+    }
+
+    public Student getStudentByName(String name) {
+        
+    }
+
+    public void deleteStudent(String name) {
+
+    }
+
+
+    public void createGrade(int studentId, Float grade) {
+
+    }
+
+    public ArrayList<Grade> getGrades(int studentId) {
+
+    }
+
+    public void updateGrade(int id, Float newGrade) {
+        
+    }
+
+    public void deleteGrade(int id) {
+        
     }
 }
