@@ -1,0 +1,4 @@
+*.class
+api/*.class
+cli/*.class
+storage/*.class
