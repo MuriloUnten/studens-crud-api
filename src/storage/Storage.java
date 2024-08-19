@@ -113,9 +113,10 @@ public class Storage {
     }
 
     public ArrayList<Grade> getGrades(int studentId) throws SQLException {
-        String query = "SELECT id_nota, nota FROM nota";
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
+        String query = "SELECT id_nota, nota FROM nota WHERE id_aluno = ?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setInt(1, studentId);
+        ResultSet rs = pstmt.executeQuery();
 
         ArrayList<Grade> grades = new ArrayList<Grade>();
         while (rs.next()) {
@@ -126,7 +127,7 @@ public class Storage {
         }
 
         rs.close();
-        stmt.close();
+        pstmt.close();
         return grades;
     }
 
