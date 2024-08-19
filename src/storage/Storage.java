@@ -1,5 +1,6 @@
 package storage;
 
+import java.io.WriteAbortedException;
 import java.sql.*;
 import java.util.Properties;
 import java.util.ArrayList;
@@ -62,38 +63,93 @@ public class Storage {
         ResultSet rs = pstmt.executeQuery();
 
         Optional<Student> student;
-        if (!rs.next()) {
+        if (rs.next()) {
+            Student s = new Student();
+            s.name = name;
+            s.id = rs.getInt(1);
+            student = Optional.ofNullable(s);
+        }
+        else {
             student = Optional.ofNullable(null);
-            return student;
         }
 
-        Student s = new Student();
-        s.name = name;
-        s.id = rs.getInt(1);
-        student = Optional.ofNullable(s);
-
+        rs.close();
+        pstmt.close();
         return student;
     }
 
-    public void deleteStudent(String name) throws SQLException {
+    public boolean deleteStudent(String name) throws SQLException {
+        String query = "DELETE FROM aluno WHERE nome = ?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setString(1, name);
+        
+        int rowsAffected = pstmt.executeUpdate();
 
+        pstmt.close();
+        return rowsAffected == 1;
     }
 
+    public boolean deleteStudent(int id) throws SQLException {
+        String query = "DELETE FROM aluno WHERE id = ?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setInt(1, id);
+        
+        int rowsAffected = pstmt.executeUpdate();
 
-    public void createGrade(int studentId, Float grade) throws SQLException {
+        pstmt.close();
+        return rowsAffected == 1;
+    }
 
+    public boolean createGrade(int studentId, Float grade) throws SQLException {
+        String query = "INSERT INTO nota(id_aluno, nota) VALUES(?, ?)";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setInt(1, studentId);
+        pstmt.setFloat(2, grade);
+
+        int rowsAffected = pstmt.executeUpdate();
+
+        pstmt.close();
+        return rowsAffected == 1;
     }
 
     public ArrayList<Grade> getGrades(int studentId) throws SQLException {
+        String query = "SELECT id_nota, nota FROM nota";
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
 
-        return null;
+        ArrayList<Grade> grades = new ArrayList<Grade>();
+        while (rs.next()) {
+            Grade g = new Grade();
+            g.id = rs.getInt(1);
+            g.value = rs.getFloat(2);
+            grades.add(g);
+        }
+
+        rs.close();
+        stmt.close();
+        return grades;
     }
 
-    public void updateGrade(int id, Float newGrade) throws SQLException {
-        
+    public boolean updateGrade(int id, Float newGrade) throws SQLException {
+        String query = "UPDATE nota SET nota = ? WHERE id_nota = ?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setFloat(1, newGrade);
+        pstmt.setInt(2, id);
+
+        int rowsAffected = pstmt.executeUpdate();
+
+        pstmt.close();
+        return rowsAffected == 1;
     }
 
-    public void deleteGrade(int id) throws SQLException {
-        
+    public boolean deleteGrade(int id) throws SQLException {
+        String query = "DELETE FROM nota WHERE id_nota = ?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setInt(1, id);
+
+        int rowsAffected = pstmt.executeUpdate();
+
+        pstmt.close();
+        return rowsAffected == 1;
     }
 }
