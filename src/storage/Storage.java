@@ -1,4 +1,4 @@
-package src.storage;
+package storage;
 
 import java.sql.*;
 import java.util.Properties;
@@ -14,43 +14,69 @@ public class Storage {
     private String url;
     private Properties properties;
 
-    Storage(String user, String password) {
+    public Storage(String user, String password) throws SQLException {
         url = "jdbc:postgresql://" + DB_ADDRESS +  ":" + DB_PORT + "/" + DB_NAME;
+
+        properties = new Properties();
         properties.setProperty("user", user);
         properties.setProperty("password", password);
+
         connection = DriverManager.getConnection(url, properties);
     }
 
-    public void createStudent(String name) {
+    public boolean createStudent(String name) throws SQLException {
+        String query = "INSERT INTO aluno(nome) VALUES(?)";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setString(1, name);
+        
+        int rowsAffected = pstmt.executeUpdate();
+
+        return rowsAffected == 1;
+    }
+
+    public ArrayList<Student> getStudents() throws SQLException {
+        String query = "SELECT id, nome FROM aluno";
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+
+        ArrayList<Student> students = new ArrayList<Student>();
+
+        while (rs.next()) {
+            Student s = new Student();
+            s.id = rs.getInt(1);
+            s.name = rs.getString(2);
+            students.add(s);
+        }
+
+        stmt.close();
+        rs.close();
+        return students;
+    }
+
+    public Student getStudentByName(String name) throws SQLException {
+        
+        return null;
+    }
+
+    public void deleteStudent(String name) throws SQLException {
 
     }
 
-    public ArrayList<String> getStudents() {
+
+    public void createGrade(int studentId, Float grade) throws SQLException {
 
     }
 
-    public Student getStudentByName(String name) {
+    public ArrayList<Grade> getGrades(int studentId) throws SQLException {
+
+        return null;
+    }
+
+    public void updateGrade(int id, Float newGrade) throws SQLException {
         
     }
 
-    public void deleteStudent(String name) {
-
-    }
-
-
-    public void createGrade(int studentId, Float grade) {
-
-    }
-
-    public ArrayList<Grade> getGrades(int studentId) {
-
-    }
-
-    public void updateGrade(int id, Float newGrade) {
-        
-    }
-
-    public void deleteGrade(int id) {
+    public void deleteGrade(int id) throws SQLException {
         
     }
 }
