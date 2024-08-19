@@ -31,6 +31,7 @@ public class Storage {
         
         int rowsAffected = pstmt.executeUpdate();
 
+        pstmt.close();
         return rowsAffected == 1;
     }
 
