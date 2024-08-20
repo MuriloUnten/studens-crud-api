@@ -37,6 +37,7 @@ public class StudentsAPI {
     public void deleteStudent(int id) {
         try {
             db.deleteStudent(id);
+            System.out.println("Aluno deletado com sucesso.");
         }
         catch (Exception e) {
             System.out.println("Não foi possível deletar o aluno. Por favor tente novamente.");

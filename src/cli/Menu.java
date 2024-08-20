@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Menu {
     private ArrayList<MenuEntry> entries;
-    private Scanner scanner;
+    private static Scanner scanner;
 
     public Menu() {
         entries = new ArrayList<MenuEntry>();
@@ -27,37 +27,42 @@ public class Menu {
     }
 
     public void run() {
-        boolean exit = false;
-        int option = entrySelector();
+        Cli.clearScreen();
 
+        System.out.println("\n--------------------");
+        printEntries();
+        System.out.println("--------------------");
+        System.out.print("Escolha uma opção: ");
+        int option = entrySelector(entries.size());
+
+        boolean exit = false;
         while (!exit) {
             if (option == 0) {
                 exit = true;
                 break;
             }
             executeEntry(option);
-            option = entrySelector();
+
+            System.out.println("\n--------------------");
+            printEntries();
+            System.out.println("--------------------");
+            System.out.print("Escolha uma opção: ");
+            option = entrySelector(entries.size());
         }
     }
 
     // Awful but works for now
-    private int entrySelector() {
-        System.out.println("\n--------------------");
-        printEntries();
-        System.out.println("--------------------");
-        System.out.print("Escolha uma opção: ");
-
+    public static int entrySelector(int entryCount) {
         int option = -1;
-        while (option <= -1 || option >= entries.size()) {
+        while (option <= -1 || option >= entryCount) {
             try {
                 option = scanner.nextInt();
 
-                if (option <= -1 || option >= entries.size()) {
+                if (option <= -1 || option >= entryCount) {
                     throw new Exception("Invalid option");
                 }
             }
             catch (Exception e) {
-                System.out.println(e);
                 System.out.print("Opção inválida. Escolha novamente (Ex. 1, 2, 3): ");
                 option = -1;
             }
