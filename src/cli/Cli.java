@@ -26,12 +26,12 @@ public class Cli {
             System.out.println("\nLista de alunos");
             System.out.println("====================");
 
-            Optional<ArrayList<Student>> students = api.listStudents();
+            ArrayList<Student> students = api.listStudents();
             if (students.isEmpty()) {
-                System.out.println("Algo de errado aconteceu...");
+                System.out.println("Nenhum aluno cadastrado.");
                 return;
             }
-            printStudents(students.get());
+            printStudents(students);
             System.out.println("====================");
         });
 
@@ -46,18 +46,18 @@ public class Cli {
             System.out.println("\nLista de alunos");
             System.out.println("====================");
 
-            Optional<ArrayList<Student>> students = api.listStudents();
+            ArrayList<Student> students = api.listStudents();
             if (students.isEmpty()) {
-                System.out.println("Algo de errado aconteceu...");
+                System.out.println("Nenhum aluno cadastrado.");
                 return;
             }
-            printStudents(students.get());
+            printStudents(students);
             System.out.println("====================");
             System.out.println("Escolha o aluno a ser deletado: ");
 
             // TODO fix: possible bad input
             int n = stdin.nextInt() - 1;
-            int id = students.get().get(n).id;
+            int id = students.get(n).id;
             api.deleteStudent(id);
         });
 
@@ -65,17 +65,17 @@ public class Cli {
             System.out.println("\nLista de alunos");
             System.out.println("====================");
 
-            Optional<ArrayList<Student>> students = api.listStudents();
+            ArrayList<Student> students = api.listStudents();
             if (students.isEmpty()) {
-                System.out.println("Algo de errado aconteceu...");
+                System.out.println("Nenhum aluno cadastrado.");
                 return;
             }
-            printStudents(students.get());
+            printStudents(students);
             System.out.println("====================");
             System.out.println("Escolha o aluno a ser selecionado: ");
 
             int n = stdin.nextInt() - 1;
-            int id = students.get().get(n).id;
+            int id = students.get(n).id;
             // TODO run the other menu
         });
     }

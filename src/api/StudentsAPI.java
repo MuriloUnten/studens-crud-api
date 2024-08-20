@@ -3,8 +3,6 @@ package api;
 import storage.*;
 
 import java.util.ArrayList;
-import java.util.Optional;
-import java.security.cert.TrustAnchor;
 import java.sql.SQLException;
 
 public class StudentsAPI {
@@ -14,17 +12,16 @@ public class StudentsAPI {
         db = new Storage(user, password);
     }
 
-    public Optional<ArrayList<Student>> listStudents() {
-        Optional<ArrayList<Student>> output;
+    public ArrayList<Student> listStudents() {
+        ArrayList<Student> students = new ArrayList<Student>();
         try {
-            ArrayList<Student> students = db.getStudents();
-            output = Optional.ofNullable(students);
+            students = db.getStudents();
         }
         catch (Exception e) {
-            output = Optional.ofNullable(null);
+            System.out.println("Algo de errado aconteceu. Não foi possível listar os estudantes. Por favor tente novamente.");
         }
 
-        return output;
+        return students;
     }
 
     public void createStudent(String name) {
