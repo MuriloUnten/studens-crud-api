@@ -69,6 +69,25 @@ public class Menu {
         }
         return option;
     }
+
+    public static float getFloatInput() {
+        Float input = null;
+        do {
+            try {
+                input = scanner.nextFloat();
+            }
+            catch (Exception e) {
+                System.out.print("Valor inválido. Por favor digite um valor válido: ");
+                input = null;
+            }
+            finally {
+                scanner.nextLine();
+            }
+            
+        } while (input == null);
+
+        return input;
+    }
  
     private void printEntries() {
         int i = 0;

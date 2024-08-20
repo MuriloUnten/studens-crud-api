@@ -11,6 +11,9 @@ public class Cli {
     private Menu mainMenu;
     private Menu studentMenu;
     private StudentsAPI api;
+
+    private Student selectedStudent;
+
     private Scanner stdin;
 
     public Cli() {
@@ -18,6 +21,7 @@ public class Cli {
         connectToDB();
         createMainMenu();
         createStudentMenu();
+        selectedStudent = null;
     }
 
     public void run() {
@@ -95,25 +99,111 @@ public class Cli {
             System.out.println("0. Voltar");
             printStudents(students);
             System.out.println("====================");
-            System.out.print("Escolha o aluno a ser selecionado: ");
+            System.out.print("Escolha um aluno: ");
 
             int option = Menu.entrySelector(students.size() + 1);
             if (option == 0) {
                 System.out.println("Voltando...");
                 return;
             }
-            // TODO run the other menu
+
+            selectedStudent = students.get(option - 1);
+            studentMenu.run();
         });
     }
 
     private void createStudentMenu() {
-        // TODO implement
+        studentMenu = new Menu();
+
+        studentMenu.createEntry("Voltar", () -> {});
+
+        studentMenu.createEntry("Listar notas", () -> {
+            Cli.clearScreen();
+            System.out.println("\nNotas de " + selectedStudent.name);
+            System.out.println("====================");
+            ArrayList<Grade> grades = api.listGrades(selectedStudent.id);
+            if (grades.isEmpty()) {
+                System.out.println("Nenhuma nota cadastrada.");
+                System.out.println("====================");
+                return;
+            }
+            printGrades(grades);
+            System.out.println("====================");
+        });
+
+        studentMenu.createEntry("Adicionar nota", () -> {
+            Cli.clearScreen();
+            System.out.println("Selecionado: Adicionar nota.");
+            System.out.print("Nota: ");
+            float grade = Menu.getFloatInput();
+            
+            api.createGrade(selectedStudent.id, grade);
+        });
+
+        studentMenu.createEntry("Editar nota", () -> {
+            Cli.clearScreen();
+            System.out.println("\nNotas de " + selectedStudent.name);
+            System.out.println("====================");
+            ArrayList<Grade> grades = api.listGrades(selectedStudent.id);
+            if (grades.isEmpty()) {
+                System.out.println("Nenhuma nota cadastrada.");
+                System.out.println("====================");
+                return;
+            }
+
+            System.out.println("0. Voltar");
+            printGrades(grades);
+            System.out.println("====================");
+            System.out.print("Selecione a nota que deseja alterar: ");
+
+            int option = Menu.entrySelector(grades.size() + 1);
+            if (option == 0) {
+                System.out.println("Voltando...");
+                return;
+            }
+            
+            System.out.print("Digite a nova nota: ");
+            float newGrade = Menu.getFloatInput();
+            api.updateGrade(grades.get(option - 1).id, newGrade);
+        });
+
+        studentMenu.createEntry("Deletar nota", () -> {
+            Cli.clearScreen();
+            System.out.println("\nNotas de " + selectedStudent.name);
+            System.out.println("====================");
+            ArrayList<Grade> grades = api.listGrades(selectedStudent.id);
+            if (grades.isEmpty()) {
+                System.out.println("Nenhuma nota cadastrada.");
+                System.out.println("====================");
+                return;
+            }
+
+            System.out.println("0. Voltar");
+            printGrades(grades);
+            System.out.println("====================");
+            System.out.print("Selecione a nota que deseja deletar: ");
+
+            int option = Menu.entrySelector(grades.size() + 1);
+            if (option == 0) {
+                System.out.println("Voltando...");
+                return;
+            }
+            
+            api.deleteGrade(grades.get(option - 1).id);
+        });
     }
 
     private void printStudents(ArrayList<Student> students) {
         int i = 1;
         for (Student s : students) {
             System.out.println(i++ + ". " + s.name);
+        }
+    }
+
+    private void printGrades(ArrayList<Grade> grades) {
+        int i = 1;
+        for (Grade g : grades) {
+            System.out.println(i++ + ". " + g.value);
         }
     }
 

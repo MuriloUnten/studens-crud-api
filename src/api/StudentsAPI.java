@@ -43,4 +43,47 @@ public class StudentsAPI {
             System.out.println("Não foi possível deletar o aluno. Por favor tente novamente.");
         }
     }
+    
+    public ArrayList<Grade> listGrades(int studentId) {
+        ArrayList<Grade> grades = new ArrayList<Grade>();
+        try {
+            grades = db.getGrades(studentId);
+        }
+        catch (Exception e) {
+            System.out.println("Algo de errado aconteceu. Não foi possível listar as notas. Por favor tente novamente.");
+        }
+
+        return grades;
+    }
+
+    public void createGrade(int studentId, float grade) {
+        try {
+            db.createGrade(studentId, grade);
+            System.out.println("Nota criada com sucesso.");
+        }
+        catch (Exception e) {
+            System.out.println("Não foi possível criar a nota. Por favor tente novamente.");
+        }
+    }
+
+    public void updateGrade(int id, float newGrade) {
+        try {
+            db.updateGrade(id, newGrade);
+            System.out.println("Nota editada com sucesso.");
+        }
+        catch (Exception e) {
+            System.out.println("Não foi possível editar a nota. Por favor tente novamente.");
+        }
+    }
+
+    public void deleteGrade(int id) {
+        try {
+            db.deleteGrade(id);
+            System.out.println("Nota deletada com sucesso.");
+        }
+        catch (Exception e) {
+            System.out.println("Não foi possível deletar a nota. Por favor tente novamente.");
+        }
+    }
+
 }
