@@ -9,5 +9,5 @@ CREATE TABLE aluno (
 CREATE TABLE nota (
     id_nota SERIAL,
     id_aluno INTEGER REFERENCES aluno ON DELETE CASCADE,
-    nota NUMERIC
+    nota NUMERIC(3, 2)
 );
