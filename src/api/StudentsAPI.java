@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.sql.SQLException;
 
 public class StudentsAPI {
+    private static final int STUDENT_NAME_MAX_CHARS = 127;
     private Storage db;
 
     public StudentsAPI(String user, String password) throws SQLException {
@@ -25,6 +26,11 @@ public class StudentsAPI {
     }
 
     public void createStudent(String name) {
+        if (name.length() > STUDENT_NAME_MAX_CHARS) {
+            System.out.println("Nome inválido. Tamanho máximo: " + STUDENT_NAME_MAX_CHARS + " caracteres.");
+            return;
+        }
+
         try {
             db.createStudent(name);
             System.out.println("Aluno criado com sucesso.");
@@ -35,6 +41,11 @@ public class StudentsAPI {
     }
 
     public void updateStudent(int id, String newName) {
+        if (newName.length() > STUDENT_NAME_MAX_CHARS) {
+            System.out.println("Nome inválido. Tamanho máximo: " + STUDENT_NAME_MAX_CHARS + " caracteres.");
+            return;
+        }
+
         try {
             db.updateStudent(id, newName);
             System.out.println("Aluno editado com sucesso.");
