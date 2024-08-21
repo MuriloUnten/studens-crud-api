@@ -78,6 +78,11 @@ public class StudentsAPI {
     }
 
     public void createGrade(int studentId, float grade) {
+        if (grade < 0 || grade > 10) {
+            System.out.println("Nota inválida. A nota deve estar entre 0 e 10.");
+            return;
+        }
+
         try {
             db.createGrade(studentId, grade);
             System.out.println("Nota criada com sucesso.");
@@ -88,6 +93,11 @@ public class StudentsAPI {
     }
 
     public void updateGrade(int id, float newGrade) {
+        if (newGrade < 0 || newGrade > 10) {
+            System.out.println("Nota inválida. A nota deve estar entre 0 e 10.");
+            return;
+        }
+
         try {
             db.updateGrade(id, newGrade);
             System.out.println("Nota editada com sucesso.");
@@ -106,5 +116,4 @@ public class StudentsAPI {
             System.out.println("Não foi possível deletar a nota. Por favor tente novamente.");
         }
     }
-
 }
