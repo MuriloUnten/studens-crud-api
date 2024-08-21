@@ -6,6 +6,7 @@ import api.*;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.Console;
 
 public class Cli {
     private Menu mainMenu;
@@ -15,9 +16,12 @@ public class Cli {
     private Student selectedStudent;
 
     private Scanner stdin;
+    private Console console;
 
     public Cli() {
         stdin = new Scanner(System.in);
+        console = System.console();
+
         connectToDB();
         createMainMenu();
         createStudentMenu();
@@ -221,7 +225,13 @@ public class Cli {
 
     private String getPassword() {
         System.out.print("Digite sua senha: ");
-        String password = stdin.nextLine();
+        String password = "";
+        try {
+            password = String.valueOf(console.readPassword());
+        }
+        catch (Exception e) {
+            System.out.println("Falha ao ler senha.");
+        }
         System.out.println("");
         return password;
     }
