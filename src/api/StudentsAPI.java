@@ -78,7 +78,8 @@ public class StudentsAPI {
     }
 
     public void createGrade(int studentId, float grade) {
-        if (grade < 0 || grade > 10) {
+        float roundedGrade = round(grade, 2);
+        if (roundedGrade < 0 || roundedGrade > 10) {
             System.out.println("Nota inválida. A nota deve estar entre 0 e 10.");
             return;
         }
@@ -93,7 +94,8 @@ public class StudentsAPI {
     }
 
     public void updateGrade(int id, float newGrade) {
-        if (newGrade < 0 || newGrade > 10) {
+        float roundedGrade = round(newGrade, 2);
+        if (roundedGrade < 0 || roundedGrade > 10) {
             System.out.println("Nota inválida. A nota deve estar entre 0 e 10.");
             return;
         }
@@ -115,5 +117,13 @@ public class StudentsAPI {
         catch (Exception e) {
             System.out.println("Não foi possível deletar a nota. Por favor tente novamente.");
         }
+    }
+
+    public static float round(float number, int scale) {
+        int pow = 10;
+        for (int i = 1; i < scale; i++)
+            pow *= 10;
+        float tmp = number * pow;
+        return ( (float) ( (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) ) ) / pow;
     }
 }
