@@ -62,6 +62,35 @@ public class Cli {
             api.createStudent(name);
         });
 
+        mainMenu.createEntry("Editar aluno", () -> {
+            Cli.clearScreen();
+            System.out.println("\nLista de alunos");
+            System.out.println("====================");
+
+            ArrayList<Student> students = api.listStudents();
+            if (students.isEmpty()) {
+                System.out.println("Nenhum aluno cadastrado.");
+                System.out.println("====================");
+                return;
+            }
+
+            System.out.println("0. Voltar");
+            printStudents(students);
+            System.out.println("====================");
+            System.out.print("Escolha o aluno a ser editado: ");
+
+            int option = Menu.entrySelector(students.size() + 1);
+            if (option == 0) {
+                System.out.println("Voltando...");
+                return;
+            }
+            int id = students.get(option - 1).id;
+
+            System.out.print("Qual o novo nome do aluno? ");
+            String newName = stdin.nextLine();
+            api.updateStudent(id, newName);
+        });
+
         mainMenu.createEntry("Deletar aluno", () -> {
             Cli.clearScreen();
             System.out.println("\nLista de alunos");

@@ -34,6 +34,16 @@ public class StudentsAPI {
         }
     }
 
+    public void updateStudent(int id, String newName) {
+        try {
+            db.updateStudent(id, newName);
+            System.out.println("Aluno editado com sucesso.");
+        }
+        catch (Exception e) {
+            System.out.println("Não foi possível editar o aluno. Por favor tente novamente.");
+        }
+    }
+
     public void deleteStudent(int id) {
         try {
             db.deleteStudent(id);

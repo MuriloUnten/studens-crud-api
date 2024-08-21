@@ -77,6 +77,18 @@ public class Storage {
         return student;
     }
 
+    public boolean updateStudent(int id, String newName) throws SQLException {
+        String query = "UPDATE aluno SET nome = ? WHERE id = ?";
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.setString(1, newName);
+        pstmt.setInt(2, id);
+        
+        int rowsAffected = pstmt.executeUpdate();
+
+        pstmt.close();
+        return rowsAffected == 1;
+    }
+
     public boolean deleteStudent(String name) throws SQLException {
         String query = "DELETE FROM aluno WHERE nome = ?";
         PreparedStatement pstmt = connection.prepareStatement(query);
