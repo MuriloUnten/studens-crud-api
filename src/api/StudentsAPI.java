@@ -83,7 +83,7 @@ public class StudentsAPI {
             return;
         }
 
-        float roundedGrade = round(grade, 2);
+        float roundedGrade = truncate(grade);
         try {
             db.createGrade(studentId, roundedGrade);
             System.out.println("Nota criada com sucesso.");
@@ -99,7 +99,7 @@ public class StudentsAPI {
             return;
         }
 
-        float roundedGrade = round(newGrade, 2);
+        float roundedGrade = truncate(newGrade);
         try {
             db.updateGrade(id, roundedGrade);
             System.out.println("Nota editada com sucesso.");
@@ -119,11 +119,9 @@ public class StudentsAPI {
         }
     }
 
-    public static float round(float number, int scale) {
-        int pow = 10;
-        for (int i = 1; i < scale; i++)
-            pow *= 10;
-        float tmp = number * pow;
-        return ( (float) ( (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) ) ) / pow;
+    public static float truncate(float number) {
+        float truncated = (float) Math.floor(number * 100);
+        truncated /= 100;
+        return truncated;
     }
 }
