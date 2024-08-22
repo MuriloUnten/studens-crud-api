@@ -78,14 +78,14 @@ public class StudentsAPI {
     }
 
     public void createGrade(int studentId, float grade) {
-        float roundedGrade = round(grade, 2);
-        if (roundedGrade < 0 || roundedGrade > 10) {
+        if (grade < 0 || grade > 10) {
             System.out.println("Nota inválida. A nota deve estar entre 0 e 10.");
             return;
         }
 
+        float roundedGrade = round(grade, 2);
         try {
-            db.createGrade(studentId, grade);
+            db.createGrade(studentId, roundedGrade);
             System.out.println("Nota criada com sucesso.");
         }
         catch (Exception e) {
@@ -94,14 +94,14 @@ public class StudentsAPI {
     }
 
     public void updateGrade(int id, float newGrade) {
-        float roundedGrade = round(newGrade, 2);
-        if (roundedGrade < 0 || roundedGrade > 10) {
+        if (newGrade < 0 || newGrade > 10) {
             System.out.println("Nota inválida. A nota deve estar entre 0 e 10.");
             return;
         }
 
+        float roundedGrade = round(newGrade, 2);
         try {
-            db.updateGrade(id, newGrade);
+            db.updateGrade(id, roundedGrade);
             System.out.println("Nota editada com sucesso.");
         }
         catch (Exception e) {
